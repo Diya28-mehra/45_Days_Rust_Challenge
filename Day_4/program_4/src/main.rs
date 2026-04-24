@@ -77,66 +77,36 @@ fn main() {
 
     let mut company = HashMap::new();
     loop{
-        
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let input = input.trim();
+        if input.to_lowercase()=="exit"{
+            break;
+        }
+        else if input.to_lowercase().starts_with("add"){
+            let parts = input[4..].split(" to ").collect::<Vec<&str>>();
+            let employee = parts[0];
+            let department = parts[1];
+            company.entry(department.to_string()).or_insert(Vec::new()).push(employee.to_string());
+        }
+        else if input.to_lowercase().starts_with("show "){
+            let department = input[5 ..].trim();
+            if department.to_lowercase()=="all"{
+                for (dept,employees) in &company{
+                    println!("{}:{:?}",dept,employees);
+                }
+            }
+            else if let Some(employees) = company.get(department){
+                println!("{}:{:?}",department,employees);
+            }
+            else{
+                println!("Department not found.");
+            }
+        }
+        else{
+           println!("Invalid command. Please try again.");
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // let mut company = HashMap::new();
-    // loop{
-    //     println!("Enter a command (Add [Name] to [Department], Show [Department], Show All, or Exit):");
-    //     let mut input = String::new();
-    //     io::stdin().read_line(&mut input).expect("Failed to read line");
-    //     let input = input.trim();
-         
-    //     if input.to_lowercase()=="exit"{
-    //         break;
-    //     }
-    //     else if input.to_lowercase().starts_with("add "){
-    //         let parts = input[4..].split(" to ").collect::<Vec<&str>>();
-    //         let name = parts[0].trim();
-    //         let department = parts[1].trim();
-    //         company.entry(department.to_string()).or_insert(Vec::new()).push(name.to_string());
-    //     }
-    //     else if input.to_lowercase().starts_with("show "){
-    //         let department = input[5..].trim();
-    //         if department.to_lowercase()=="all"{
-    //             for (dept,employees) in &company{
-    //                 println!("{}:{:?}",dept,employees);
-    //             }
-    //         }
-    //         else if let Some(employees) = company.get(department){
-    //             println!("{}: {:?}", department, employees);
-    //         }
-    //         else{
-    //             println!("Department not found.");
-    //         }
-    //     }
-    //     else{
-    //         println!("Invalid command. Please try again.");
-    //     }
-    // }
 }
 
 fn is_vowel(c:char)->bool{
